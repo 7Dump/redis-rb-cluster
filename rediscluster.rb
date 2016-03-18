@@ -34,6 +34,14 @@ class RedisCluster
     RedisClusterRequestTTL = 16
     RedisClusterDefaultTimeout = 1
 
+    # Compability with redis-rb
+    class Client
+        def reconnect
+            # this is need?
+        end
+    end
+    attr_accessor :client
+
     # Initialise the client
 
     # @param [Fixnum] number of connections in each connection pool
@@ -50,6 +58,7 @@ class RedisCluster
         @log = Logger.new(STDOUT)
         @log.level = Logger::INFO
         initialize_slots_cache
+        @client = Client.new
     end
 
     def inspect
