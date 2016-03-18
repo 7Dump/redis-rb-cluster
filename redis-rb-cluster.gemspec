@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
     s.name        = "rediscluster"
     s.platform    = Gem::Platform::RUBY
-    s.version     = 0.2
+    s.version     = 0.1
     s.authors     = ["Antirez", "iandyh"]
     s.email       = []
     #s.homepage    = "https://github.com/"
