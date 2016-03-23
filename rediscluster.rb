@@ -354,10 +354,19 @@ class RedisCluster
     def incrbyfloat(key, increment)
         send_cluster_command([:incrbyfloat, key, increment])
     end
-
-    def mget(*keys, &blk)
-        _check_keys_in_same_slot(keys)
-        send_cluster_command([:mget, *keys], master_only: false, &blk)
+    
+    def mget(*keys)
+      return [] if keys.nil?
+      @connections.make_fork_safe(@startup_nodes)
+      ret = []
+      @startup_nodes.each do |n|
+          node_name = n[:name]
+          r = @connections.get_connection_by_node(node_name)
+          keys.to_a.flatten.each do |k|
+            ret << r.get(k) rescue next
+          end
+      end
+      ret.flatten.uniq
     end
 
     def mapped_mget(*keys)
