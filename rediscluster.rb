@@ -360,7 +360,7 @@ class RedisCluster
       keys.to_a.flatten.each do |k|
         ret << get(k)
       end
-      ret.flatten.uniq
+      ret
     end
 
     def mapped_mget(*keys)
