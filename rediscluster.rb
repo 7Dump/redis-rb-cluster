@@ -357,8 +357,8 @@ class RedisCluster
     def mget(*keys)
       return [] if keys.nil?
       ret = []
-      keys.to_a.flatten.each do |k|
-        ret << get(k)
+      keys.to_a.each do |k|
+        ret << k.nil? ? nil : get(k)
       end
       ret
     end
