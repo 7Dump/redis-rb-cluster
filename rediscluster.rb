@@ -356,19 +356,9 @@ class RedisCluster
     
     def mget(*keys)
       return [] if keys.nil?
-      @connections.make_fork_safe(@startup_nodes)
-      keys_and_values = {}
-      @startup_nodes.each do |n|
-          node_name = n[:name]
-          r = @connections.get_connection_by_node(node_name)
-          keys.to_a.flatten.each do |k|
-            keys_and_values[k] = r.get(k) rescue next
-          end
-      end
-
       ret = []
       keys.to_a.flatten.each do |k|
-        ret << keys_and_values[k]
+        ret << get(k)
       end
       ret.flatten.uniq
     end
