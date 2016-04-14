@@ -8,7 +8,7 @@ class TestBase < Test::Unit::TestCase
   KEY = "asdf"
 
   def setup
-    host = 'redis'
+    host = '127.0.0.1'
     port1 = '7002'
     port2 = '7003'
 
@@ -16,19 +16,11 @@ class TestBase < Test::Unit::TestCase
       {:host => host, :port => port1},
       {:host => host, :port => port2},
     ]
-    @rc = RedisCluster.new(startup_nodes, 2)
+    @rc = RedisCluster.new(startup_nodes)
   end
 
   def teardown
-    @rc.flushdb
-  end
-
-  def get_keys_in_same_slot
-    ['bbb', 'mngopdrw']
-  end
-
-  def get_keys_in_diff_slot
-    ['bbb', 'aaa']
+    
   end
 
 end
