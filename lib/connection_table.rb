@@ -91,6 +91,7 @@ class ConnectionTable
 
     def make_fork_safe(nodes)
         if @pid != get_pid
+            @pid = get_pid
             @master_conns = {}
             @slave_conns = {}
             init_node_pool(nodes)
