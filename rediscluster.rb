@@ -362,7 +362,13 @@ class RedisCluster
       end
       ret
     end
-
+    
+    def getset(key, value)
+      old_value = get(key)
+      set(key, value)
+      old_value
+    end
+    
     def mapped_mget(*keys)
         mget(*keys) do |reply|
             if reply.kind_of?(Array)
