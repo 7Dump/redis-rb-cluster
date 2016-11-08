@@ -234,15 +234,19 @@ class RedisCluster
         ret = {}
         cmd = argv.shift
         @startup_nodes.each do |n|
-            if master_only && n[:role] == 'slave'
-                next
-            end
-            node_name = n[:name]
-            r = @connections.get_connection_by_node(node_name)
-            ret[node_name] = r.public_send(cmd, *argv)
-            if log_required
-                all = [cmd] + argv
-                @log.info("Successfully sent #{all.to_s} to #{node_name}")
+            begin
+                if master_only && n[:role] == 'slave'
+                    next
+                end
+                node_name = n[:name]
+                r = @connections.get_connection_by_node(node_name)
+                ret[node_name] = r.public_send(cmd, *argv)
+                if log_required
+                    all = [cmd] + argv
+                    @log.info("Successfully sent #{all.to_s} to #{node_name}")
+                end
+            rescue => e
+                next #skip if node not responding
             end
         end
         ret
